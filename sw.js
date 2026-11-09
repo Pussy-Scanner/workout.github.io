@@ -1,8 +1,8 @@
-const VERSION="wt-v1";
-const CDN="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+const VERSION="wt-v4";
+const CDNS=["https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js","https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"];
 const LOCAL=["./","./index.html","./manifest.webmanifest","./icon-180.png","./icon-192.png","./icon-512.png"];
 self.addEventListener("install",e=>{e.waitUntil((async()=>{const c=await caches.open(VERSION);await c.addAll(LOCAL);
-  try{await c.put(CDN,await fetch(new Request(CDN,{mode:"no-cors"})))}catch(err){}
+  for(const u of CDNS){try{await c.put(u,await fetch(new Request(u,{mode:"no-cors"})))}catch(err){}}
   self.skipWaiting()})())});
 self.addEventListener("activate",e=>{e.waitUntil((async()=>{for(const k of await caches.keys())if(k!==VERSION)await caches.delete(k);await self.clients.claim()})())});
 self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;

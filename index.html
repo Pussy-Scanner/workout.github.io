@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Тренировки">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <style>
 :root{--bg:#f4f5f7;--card:#fff;--tx:#111827;--mu:#6b7280;--ac:#2563eb;--acx:#fff;--ok:#16a34a;--sk:#d97706;--bd:#e5e7eb;--in:#f3f4f6;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--card:#161d30;--tx:#f1f5f9;--mu:#94a3b8;--ok:#4ade80;--sk:#fbbf24;--bd:#263049;--in:#0f1626;color-scheme:dark}}
@@ -72,11 +73,15 @@ button.big{width:100%;max-width:320px;padding:16px;font-size:18px;border-radius:
 .dwi{display:flex;align-items:center;gap:14px}.dwi svg{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 #md{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;background:#0007;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}#md.on{display:flex}#mb{width:min(88vw,360px);background:var(--card);border-radius:20px;padding:18px;box-shadow:0 20px 60px #0006;animation:cin .45s var(--sp)}
 #ts{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:all .45s var(--sp);z-index:50;font-size:15px}#ts.on{opacity:1;transform:translate(-50%,0)}
+.lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-top:4px}.wk-l{font-size:17px;line-height:1.4}.wk-l.mu{font-size:15px}.wk-l b{font-weight:700}
+.cm{font-size:14px;line-height:1.35;color:var(--mu);max-width:330px;background:var(--in);border-radius:12px;padding:8px 12px;text-align:left}
+.ill{display:flex;justify-content:center;color:var(--ac);background:var(--in);border-radius:14px;padding:8px;margin:8px 0}.ill svg{width:min(100%,260px);height:auto}ul.tl{padding-left:18px;margin:6px 0}ul.tl li{margin:4px 0}
+.ill.ill2{gap:6px;padding:6px}.ill.ill2 svg{width:50%;max-width:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body><main>
 <div id="timer" class="row sp"><span id="tt"></span><button onclick="stopT()">Стоп</button></div>
 <div id="app"></div></main>
-<header><button onclick="dr(1)" aria-label="Меню"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><b id="ht">Тренировка</b><span style="width:44px"></span></header><div id="ov" onclick="dr(0)"></div><aside id="dw"><h2 style="padding:6px 8px 12px">Меню</h2><button class="dwi a" data-v="work"><svg viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2M9.5 2.8h5"/></svg>Тренировка</button><button class="dwi" data-v="day"><svg viewBox="0 0 24 24"><path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20M3.8 6.5l1.2 1.2 2-2.4M3.8 12l1.2 1.2 2-2.4M3.8 17.5l1.2 1.2 2-2.4"/></svg>Сегодня</button><button class="dwi" data-v="cal"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Календарь</button><button class="dwi" data-v="plan"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></svg>План</button><button class="dwi" data-v="set"><svg viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>Ещё</button></aside><div id="md"><div id="mb"></div></div><div id="ts"></div>
+<header><button onclick="dr(1)" aria-label="Меню"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><b id="ht">Тренировка</b><span style="width:44px"></span></header><div id="ov" onclick="dr(0)"></div><aside id="dw"><h2 style="padding:6px 8px 12px">Меню</h2><button class="dwi a" data-v="work"><svg viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2M9.5 2.8h5"/></svg>Тренировка</button><button class="dwi" data-v="day"><svg viewBox="0 0 24 24"><path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20M3.8 6.5l1.2 1.2 2-2.4M3.8 12l1.2 1.2 2-2.4M3.8 17.5l1.2 1.2 2-2.4"/></svg>Сегодня</button><button class="dwi" data-v="tips"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>Советы</button><button class="dwi" data-v="cal"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Календарь</button><button class="dwi" data-v="plan"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/></svg>План</button><button class="dwi" data-v="set"><svg viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>Ещё</button></aside><div id="md"><div id="mb"></div></div><div id="ts"></div>
 <script>
 const WD7=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
 const WDM={"Понедельник":"Пн","Вторник":"Вт","Среда":"Ср","Четверг":"Чт","Пятница":"Пт","Суббота":"Сб","Воскресенье":"Вс"};
@@ -115,7 +120,7 @@ function ymNow(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth
 function init(){return{mo:{}}}
 function norm(s){if(!s.tpl)s.tpl=s.plan||defPlan();delete s.plan;
  if(!s.mo){s.mo={};if(s.log&&s.start)Object.keys(s.log).forEach(j=>{const d=new Date(s.start+"T00:00:00");d.setDate(d.getDate()+ +j);const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");(s.mo[k]=s.mo[k]||{log:{}}).log[d.getDate()-1]=s.log[j]})}
- delete s.log;delete s.start;s.ac=s.ac||"#2563eb";s.snd=s.snd||"bell";if(s.vol==null)s.vol=.6;s.ym=ymNow();return s}
+ delete s.log;delete s.start;s.ac=s.ac||"#2563eb";if(s.pre==null)s.pre=3;s.snd=s.snd||"bell";if(s.vol==null)s.vol=.6;s.ym=ymNow();return s}
 function load(){let s=null;try{s=JSON.parse(localStorage.getItem(K))}catch(e){}return norm(s||mem||init())}
 function gen(ym){const [Y,Mn]=ym.split("-").map(Number),n=new Date(Y,Mn,0).getDate(),T=S.tpl,out=[];
  for(let dm=1;dm<=n;dm++){const w=(new Date(Y,Mn-1,dm).getDay()+6)%7,c=T.filter(r=>r.wd===WD7[w]),r=c.length?c[Math.floor((dm-1)/7)%c.length]:T[(dm-1)%T.length],x=JSON.parse(JSON.stringify(r));x.wd=WD7[w];x.n="День "+dm;out.push(x)}
@@ -131,7 +136,7 @@ const dsets=(e,l)=>l&&e.s>2?Math.max(2,Math.round(e.s*.65)):e.s;
 function tgt(name,i){const e=P()[i].ex.find(q=>q.n===name);const st={r:e.lo,w:e.w0},seq=[];
  Object.keys(S.mo).sort().forEach(k=>{if(k<S.ym&&S.mo[k].plan)S.mo[k].plan.forEach((d,j)=>seq.push([d,S.mo[k].log[j]]))});
  P().forEach((d,j)=>{if(j<i)seq.push([d,LG()[j]])});
- for(const [d,l] of seq){if(d.light||!l)continue;const x=d.ex.findIndex(q=>q.n===name);if(x<0)continue;const f=d.ex[x],a=l.sets[x]||[],dn=a.filter(v=>v&&v.ok);if(!dn.length||l.st==="skip")continue;
+ for(const [d,l] of seq){if(d.light||!l)continue;const x=d.ex.findIndex(q=>q.n===name);if(x<0)continue;const f=d.ex[x],a=l.sets[x]||[],dn=a.filter(v=>v&&(v.ok||v.r));if(!dn.length||l.st==="skip")continue;
   const mr=Math.min(...dn.map(v=>v.r?num(v.r):st.r)),prev=st.r;
   if(f.w){const ws=dn.map(v=>v.w?num(v.w):st.w).filter(n=>!isNaN(n));if(ws.length)st.w=Math.min(...ws)}
   st.r=Math.max(1,Math.min(mr,f.hi));
@@ -144,7 +149,7 @@ dbl:["Двойной сигнал",[[660,0,.2,"triangle",.5],[880,.25,.3,"triang
 gong:["Гонг",[[196,0,2.2,"sine",.6],[294,0,1.8,"sine",.3],[392,0,1.4,"sine",.2]]],
 arp:["Восходящий",[[523,0,.15,"triangle",.5],[659,.15,.15,"triangle",.5],[784,.3,.15,"triangle",.5],[1047,.45,.5,"triangle",.5]]],
 alarm:["Будильник",[[880,0,.18,"sawtooth",.2],[660,.2,.18,"sawtooth",.2],[880,.4,.18,"sawtooth",.2],[660,.6,.18,"sawtooth",.2],[880,.8,.3,"sawtooth",.2]]],
-none:["Без звука",[]]};
+none:["Без звука",[]],go:["",[[1175,0,.4,"sine",.6]]],tk:["",[[660,0,.12,"sine",.35]]]};
 let AC=null;function actx(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume()}catch(e){}return AC}
 function playWA(id){const c=actx();if(!c||!SN[id])return;const t0=c.currentTime+.02;
  SN[id][1].forEach(([f,s,d,ty,g])=>{const o=c.createOscillator(),n=c.createGain();o.type=ty;o.frequency.value=f;const v=Math.max(.0002,g*S.vol);
@@ -172,15 +177,15 @@ const BGS=["#ffffff","#f4f5f7","#fdf6e3","#fff4e5","#fde8e8","#fce4ec","#f3e8ff"
 const PAL=["#2563eb","#7c3aed","#db2777","#dc2626","#ea580c","#ca8a04","#16a34a","#0d9488","#0891b2","#475569"];
 /* ---------- экраны ---------- */
 function render(a){document.querySelectorAll(".dwi").forEach(b=>b.classList.toggle("a",b.dataset.v===V));document.getElementById("ht").textContent=TT[V];const tb=document.getElementById("timer");if(V==="work")tb.style.display="none";else if(run)tb.style.display="flex";
- document.getElementById("app").innerHTML=`<div class="pg${a?" a-"+a:""}">`+(V==="work"?vWork():V==="day"?vDay():V==="cal"?vCal():V==="plan"?vPlanEd():vSet())+"</div>"}
+ document.getElementById("app").innerHTML=`<div class="pg${a?" a-"+a:""}">`+(V==="work"?vWork():V==="tips"?vTips():V==="day"?vDay():V==="cal"?vCal():V==="plan"?vPlanEd():vSet())+"</div>"}
 function vDay(){const i=cur,d=P()[i],l=L(i),n=d.ex.reduce((a,e)=>a+dsets(e,d.light),0),dn=Object.values(l.sets).reduce((a,x)=>a+x.filter(s=>s&&s.ok).length,0);
  let h=`<div class="row sp" style="flex-wrap:nowrap"><button onclick="go(-1)">‹</button><div style="text-align:center"><h1 style="margin:0">${wdOf(i)}, ${dateOf(i)}</h1><div class="mu" style="font-size:20px;font-weight:700;line-height:1.3">День ${i+1} из ${P().length}</div></div><button onclick="go(1)">›</button></div>
  <div class="card"><div class="row sp"><h2>${d.t}</h2>${l.st?`<span class="tag" style="background:var(--${l.st==="done"?"ok":"sk"});color:#fff">${l.st==="done"?"Выполнено":"Пропущено"}</span>`:""}</div>
  <div class="mu">${d.k}${d.light?' · <span class="tag l">облегчённая неделя</span>':""}</div><div class="note">${d.note}${d.light?" "+LT:""}</div>`;
  if(n)h+=`<div class="bar"><i style="width:${dn/n*100}%"></i></div><div class="mu">Подходов: ${dn} из ${n}</div>`;h+="</div>";
  d.ex.forEach((e,x)=>{const c=dsets(e,d.light),a=l.sets[x]||[],t=tgt(e.n,i);
-  h+=`<div class="card"><h2>${e.n}</h2><div class="tg">${c} × ${t.r}${e.u}${e.w?" · +"+fw(t.w)+" кг":""}</div><div class="mu">диапазон ${e.lo}${e.hi>e.lo?"–"+e.hi:""}${e.u} · отдых ${e.rest>=120?fw(e.rest/60)+" мин":e.rest+" сек"}</div>`;
-  for(let s=0;s<c;s++){const v=a[s]||{};h+=`<div class="set${e.w?" hw":""}"><span class="mu">${s+1}</span>${e.w?`<input inputmode="decimal" placeholder="${fw(t.w)} кг" value="${v.w||""}" oninput="inp(${x},${s},'w',this.value)">`:""}<input inputmode="numeric" placeholder="${t.r}${e.u}" value="${v.r||""}" oninput="inp(${x},${s},'r',this.value)"><span></span><button class="chk${v.ok?" on":""}${lastTog===x+","+s?" pop":""}" onclick="tg(${x},${s})">✓</button></div>`}h+="</div>"});
+  h+=`<div class="card"><h2>${e.n}</h2><div class="tg">${c} × ${t.r}${e.u}${e.w?" · +"+fw(t.w)+" кг":""}</div><div class="mu">диапазон ${e.lo}${e.hi>e.lo?"–"+e.hi:""}${e.u} · отдых ${e.rest>=120?fw(e.rest/60)+" мин":e.rest+" сек"}</div>${nextLine(e,i)}`;
+  for(let s=0;s<c;s++){const v=a[s]||{};h+=`<div class="set${e.w?" hw":""}"><span class="mu">${s+1}</span>${e.w?`<input inputmode="decimal" placeholder="${fw(t.w)} кг" value="${v.w||""}" oninput="inp(${x},${s},'w',this.value)">`:""}<input inputmode="numeric" placeholder="${t.r}${e.u}" value="${v.r||""}" oninput="inp(${x},${s},'r',this.value)"><span></span><button data-ck="${x}-${s}" class="chk${v.ok?" on":""}${lastTog===x+","+s?" pop":""}" onclick="tg(${x},${s})">✓</button></div>`}h+="</div>"});
  return h+`<div class="card"><textarea rows="2" placeholder="Заметки: самочувствие, локти/плечи/запястья, сон" oninput="nt(this.value)">${l.note||""}</textarea><div class="row" style="margin-top:10px"><button class="ok" onclick="st('done')">Выполнено</button><button class="sk" onclick="st('skip')">Пропустил</button><button onclick="resetDay()">Сброс</button></div></div>`}
 function vCal(){const N=P().length,done=Object.values(LG()).filter(l=>l.st==="done").length,sk=Object.values(LG()).filter(l=>l.st==="skip").length;
  let h=`<div class="row sp" style="flex-wrap:nowrap"><button onclick="mon(-1)">‹</button><h1 style="margin:0;text-align:center">${monthName()}</h1><button onclick="mon(1)">›</button></div><div class="card"><div class="row sp"><b>Выполнено ${done} из ${N}</b><span class="mu">пропущено ${sk}</span></div><div class="bar"><i style="width:${done/N*100}%"></i></div></div><div class="card"><div class="grid c7">${WD7.map(w=>`<div class="mu" style="text-align:center">${w}</div>`).join("")}${"<span></span>".repeat(sd())}`;
@@ -189,10 +194,11 @@ function vCal(){const N=P().length,done=Object.values(LG()).filter(l=>l.st==="do
 function vSet(){return`<h1>Ещё</h1>
  <div class="card"><h2>Цвет интерфейса</h2><input type="color" value="${S.ac}" oninput="S.ac=this.value;save();applyColor()"><div class="sw">${PAL.map(c=>`<i style="background:${c}" onclick="S.ac='${c}';save();applyColor();render()"></i>`).join("")}</div></div>
  <div class="card"><h2>Цвет фона</h2><p class="mu">Фон, окна и все страницы. Цвет текста подбирается автоматически.</p><input type="color" value="${S.bg||'#f4f5f7'}" oninput="S.bg=this.value;save();applyBg()"><div class="sw">${BGS.map(c=>`<i style="background:${c}" onclick="S.bg='${c}';save();applyBg();render()"></i>`).join("")}</div><div class="row" style="margin-top:8px"><button onclick="S.bg='';save();applyBg();render()">Как в системе</button></div></div>
- <div class="card"><h2>Звук таймера</h2><select onchange="S.snd=this.value;save();play(S.snd)">${Object.keys(SN).map(k=>`<option value="${k}"${S.snd===k?" selected":""}>${SN[k][0]}</option>`).join("")}</select>
+ <div class="card"><h2>Звук таймера</h2><select onchange="S.snd=this.value;save();play(S.snd)">${Object.keys(SN).filter(k=>SN[k][0]).map(k=>`<option value="${k}"${S.snd===k?" selected":""}>${SN[k][0]}</option>`).join("")}</select>
  <div class="mu" style="margin-top:8px">Громкость</div><input type="range" min="0.05" max="1" step="0.05" value="${S.vol}" oninput="S.vol=+this.value;save()" onchange="play(S.snd)">
  <div class="row" style="margin-top:8px"><button onclick="unlockAudio();play(S.snd)">Проверить звук</button></div></div>
- <div class="card"><h2>Загрузить программу из Excel</h2><p class="mu">План строится на календарный месяц (30 или 31 день): тренировки подставляются по дню недели. Файл в том же формате: колонки «День, День недели, Тип нагрузки, Название, Инструкция…». Прогресс при загрузке сбрасывается.</p><input type="file" accept=".xlsx,.xls" onchange="imp(this)"><p class="mu">Сейчас в плане: ${P().length} дн., ${P().reduce((a,d)=>a+d.ex.length,0)} упражнений.</p><button onclick="dlg('Вернуть программу по умолчанию? Прогресс будет сброшен.',()=>{S.tpl=defPlan();S.mo={};S.rules='';save();cur=todayIdx();render()})">Вернуть исходную</button></div>
+ <div class="card"><h2>Отсчёт перед упражнением на время</h2><p class="mu">Пауза с обратным отсчётом «3…2…1…Старт!», чтобы собраться перед планкой, висом и т. п. 0 — без паузы.</p><div class="row sp"><span>Задержка</span><b id="prv">${S.pre} с</b></div><input type="range" min="0" max="10" step="1" value="${S.pre}" oninput="S.pre=+this.value;document.getElementById('prv').textContent=S.pre+' с';save()"></div>
+ <div class="card"><h2>Загрузить программу из Excel</h2><p class="mu">План строится на календарный месяц (30 или 31 день): тренировки подставляются по дню недели. Файл в том же формате: колонки «День, День недели, Тип нагрузки, Название, Инструкция…». Прогресс при загрузке сбрасывается.</p><input type="file" accept=".xlsx,.xls" onchange="imp(this)"><p class="mu">Сейчас в плане: ${P().length} дн., ${P().reduce((a,d)=>a+d.ex.length,0)} упражнений.</p><button class="p" onclick="expX()">Скачать Excel</button> <button onclick="dlg('Вернуть программу по умолчанию? Прогресс будет сброшен.',()=>{S.tpl=defPlan();S.mo={};S.rules='';save();cur=todayIdx();render()})">Вернуть исходную</button></div>
  
  <div class="card"><h2>Правила и прогрессия</h2><p class="mu">Цель на каждый подход считается автоматически: если все подходы предыдущей тренировки этого упражнения выполнены (✓, повторения не ниже цели), цель растёт на 1 повторение (или +5 сек). Дойдя до верхней границы, для упражнений с весом прибавляется 1,25 кг и повторения возвращаются к нижней границе. Цель считается по фактически выполненным тренировкам, а не по плану: пропущенные дни и облегчённая неделя прогресс не меняют; если сделал меньше цели (или с меньшим весом), следующая цель подстраивается под факт.</p><p class="mu pre">${S.rules||DR}</p></div>
  <div class="card"><h2>Данные</h2><div class="row"><button onclick="ex()">Копировать</button><button onclick="im()">Импорт</button><button onclick="rs()">Сбросить прогресс</button></div><p class="mu">Хранится в браузере на устройстве. iPhone: Safari → Поделиться → «На экран Домой».</p></div>`}
@@ -213,7 +219,7 @@ function vEd(i){const d=P()[i];
  let h=`<div class="row sp" style="flex-wrap:nowrap"><button onclick="EI=null;render('r')">‹ План</button><b>День ${i+1} · ${wdOf(i)}</b><span></span></div>
  <div class="card"><div class="mu">Название</div><input value="${esc(d.t)}" oninput="ed('t',this.value)"><div class="mu" style="margin-top:8px">Тип нагрузки</div><input value="${esc(d.k)}" oninput="ed('k',this.value)"><div class="mu" style="margin-top:8px">Заметка</div><textarea rows="3" oninput="ed('note',this.value)">${esc(d.note)}</textarea><label class="row mu" style="margin-top:8px;flex-wrap:nowrap"><input type="checkbox" style="width:auto" ${d.light?"checked":""} onchange="ed('light',this.checked)"> Облегчённый день</label></div>`;
  d.ex.forEach((e,x)=>{h+=`<div class="card"><div class="row sp"><b>Упражнение ${x+1}</b><span class="row"><button onclick="mvEx(${x},-1)">↑</button><button onclick="mvEx(${x},1)">↓</button><button class="sk" onclick="rmEx(${x})">✕</button></span></div>
- <input value="${esc(e.n)}" oninput="ee(${x},'n',this.value)" style="margin-top:8px">
+ <input value="${esc(e.n)}" oninput="ee(${x},'n',this.value)" style="margin-top:8px"><input value="${esc(e.cm||"")}" placeholder="Комментарий к упражнению (виден на странице «Тренировка»)" oninput="ee(${x},'cm',this.value)" style="margin-top:8px"><div class="mu" style="margin-top:6px">Цель по алгоритму: ${tline(e,i)}</div>
  <div class="g3"><label class="mu">Подходы<input type="number" inputmode="numeric" value="${e.s}" oninput="ee(${x},'s',+this.value)"></label><label class="mu">Повт. от<input type="number" inputmode="numeric" value="${e.lo}" oninput="ee(${x},'lo',+this.value)"></label><label class="mu">до<input type="number" inputmode="numeric" value="${e.hi}" oninput="ee(${x},'hi',+this.value)"></label></div>
  <div class="g3"><label class="mu">Единица<select onchange="ee(${x},'u',this.value)"><option value=""${e.u?"":" selected"}>повторения</option><option value=" сек"${e.u?" selected":""}>секунды</option></select></label><label class="mu">Отдых, сек<input type="number" inputmode="numeric" value="${e.rest}" oninput="ee(${x},'rest',+this.value)"></label><label class="mu">Старт, кг<input type="number" inputmode="decimal" step="0.25" value="${e.w0}" oninput="ee(${x},'w0',+this.value)"></label></div>
  <label class="row mu" style="margin-top:8px;flex-wrap:nowrap"><input type="checkbox" style="width:auto" ${e.w?"checked":""} onchange="ee(${x},'w',this.checked)"> С отягощением (вес растёт автоматически)</label></div>`});
@@ -229,19 +235,23 @@ function clearDay(){dlg("Удалить все упражнения этого �
 function addDay(){const i=P().length;P().push({n:"День "+(i+1),wd:wdOf(i),k:"Отдых",t:"Новый день",light:false,note:"",ex:[]});save();render()}
 function delDay(){dlg("Удалить последний день плана?",()=>{P().pop();delete LG()[P().length];if(cur>=P().length)cur=P().length-1;save();render()})}
 /* ---------- тренировка и шторка ---------- */
-const TT={work:"Тренировка",day:"Сегодня",cal:"Календарь",plan:"План",set:"Ещё"};let dro=false;
+const TT={work:"Тренировка",tips:"Советы",day:"Сегодня",cal:"Календарь",plan:"План",set:"Ещё"};let dro=false;
 function dr(o){dro=!!o;document.getElementById("ov").classList.toggle("on",dro);document.getElementById("dw").classList.toggle("on",dro)}
 function seqOf(i){const d=P()[i],l=LG()[i]||{sets:{}},o=[];d.ex.forEach((e,x)=>{const c=dsets(e,d.light);for(let s=0;s<c;s++){const v=(l.sets[x]||[])[s];o.push({x,s,c,e,ok:!!(v&&v.ok)})}});return o}
 function lab(){const q=seqOf(cur),k=q.findIndex(z=>!z.ok);if(!q.length)return"Отдых";if(k<0)return"Конец";if(q[k].e.u)return"Запустить таймер упражнения";return q.some(y=>y.ok)?"Следующий подход":"Готов!"}
-function ringSt(){const r=run?Math.max(0,(te-Date.now())/1e3):0;return{off:run&&tTot?565.5*(1-r/tTot):0,txt:run?fmt(Math.ceil(r)):lab()}}
-function ring(){const e=document.getElementById("rg");if(!e)return;const q=ringSt(),t=document.getElementById("rt");e.style.strokeDashoffset=q.off;t.textContent=q.txt;t.classList.toggle("idle",!run);document.getElementById("rs").textContent=run?(tm==="ex"?"упражнение":"отдых"):""}
+function ringSt(){const r=run?Math.max(0,(te-Date.now())/1e3):0;return{off:run&&tTot?565.5*(1-r/tTot):0,txt:run?(tm==="pre"?String(Math.ceil(r)):tm==="ex"&&Date.now()<goT?"Старт!":fmt(Math.ceil(r))):lab()}}
+function ring(){const e=document.getElementById("rg");if(!e)return;const q=ringSt(),t=document.getElementById("rt");e.style.strokeDashoffset=q.off;t.textContent=q.txt;t.classList.toggle("idle",!run);document.getElementById("rs").textContent=run?(tm==="ex"?"упражнение":tm==="pre"?"приготовься":"отдых"):""}
+function ln(e,t,c,n,m){m=m||"";return`<div class="wk-l ${m}">${n!=null?`Подход <b>${n}</b> из <b>${c}</b>`:`Подходов: <b>${c}</b>`}</div><div class="wk-l ${m}">${e.u?"Время в подходе":"Повторений в подходе"}: <b>${t.r}${e.u}</b></div>${e.w?`<div class="wk-l ${m}">Вес: <b>+${fw(t.w)} кг</b></div>`:""}`}
 function vWork(){const i=cur,d=P()[i],q=seqOf(i),k=q.findIndex(z=>!z.ok),z=q[k],R=ringSt();let top,bot="",btns="";
  if(!q.length){top=`<div class="mu">${wdOf(i)}, ${dateOf(i)}</div><div class="wk-ex">Сегодня отдых</div><div class="mu">${esc(d.note)}</div>`}
  else if(k<0){top=`<div class="mu">${esc(d.t)}</div><div class="wk-ex">Тренировка завершена</div>`;bot=`<div class="mu">Все подходы выполнены</div>`;btns=`<button class="ok big" onclick="stopT();st('done')">Отметить выполненной</button><button onclick="undo()">↶ Отменить подход</button>`}
- else{const t=tgt(z.e.n,i),nx=q.find(y=>y.x>z.x);top=`<div class="mu">Сейчас</div><div class="wk-ex">${esc(z.e.n)}</div><div class="mu">Подход ${z.s+1} из ${z.c} · ${t.r}${z.e.u}${z.e.w?" · +"+fw(t.w)+" кг":""}</div>`;bot=`<div class="mu">Дальше</div><div class="wk-ex2">${nx?esc(nx.e.n):"Конец тренировки"}</div>`;btns=`<div class="row" style="justify-content:center"><button onclick="adj(-15)">−15 с</button><button onclick="stopT()">${run&&tm==="ex"?"Остановить":"Пропустить отдых"}</button><button onclick="adj(15)">+15 с</button></div><button onclick="undo()">↶ Отменить подход</button>`}
- return`<div class="wk">${top}<div class="rb"${k>=0?' onclick="tap()"':""}><svg viewBox="0 0 200 200"><circle class="tr" cx="100" cy="100" r="90" fill="none" stroke-width="9"/><circle id="rg" class="pg2" cx="100" cy="100" r="90" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="565.5" style="stroke-dashoffset:${R.off}"/></svg><div class="rin"><div id="rt" class="rtime${run?"":" idle"}">${R.txt}</div><div id="rs" class="mu">${run?(tm==="ex"?"упражнение":"отдых"):""}</div></div></div>${bot}${btns}</div>`}
+ else{const t=tgt(z.e.n,i),tp=tipOf(z.e.n),nx=q.find(y=>y.x>z.x);
+  top=`<div class="lbl">Сейчас</div><div class="wk-ex">${esc(z.e.n)}</div>${ln(z.e,t,z.c,z.s+1)}${tp?`<div class="cm">${tp[2]}</div>`:""}${z.e.cm?`<div class="cm">Заметка: ${esc(z.e.cm)}</div>`:""}`;
+  bot=`<div class="lbl">Дальше</div>`+(nx?`<div class="wk-ex2">${esc(nx.e.n)}</div>${ln(nx.e,tgt(nx.e.n,i),nx.c,null,"mu")}`:`<div class="wk-ex2">Конец тренировки</div>`);
+  btns=`<div class="row" style="justify-content:center"><button onclick="adj(-15)">−15 с</button><button onclick="stopT()">${run&&tm!=="rest"?"Остановить":"Пропустить отдых"}</button><button onclick="adj(15)">+15 с</button></div><button onclick="undo()">↶ Отменить подход</button>`}
+ return`<div class="wk">${top}<div class="rb"${k>=0?' onclick="tap()"':""}><svg viewBox="0 0 200 200"><circle class="tr" cx="100" cy="100" r="90" fill="none" stroke-width="9"/><circle id="rg" class="pg2" cx="100" cy="100" r="90" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="565.5" style="stroke-dashoffset:${R.off}"/></svg><div class="rin"><div id="rt" class="rtime${run?"":" idle"}">${R.txt}</div><div id="rs" class="mu">${run?(tm==="ex"?"упражнение":tm==="pre"?"приготовься":"отдых"):""}</div></div></div>${bot}${btns}</div>`}
 function done(){unlockAudio();const i=cur,q=seqOf(i),k=q.findIndex(z=>!z.ok);if(k<0)return;const z=q[k],a=L(i).sets[z.x]||(L(i).sets[z.x]=[]),v=a[z.s]||(a[z.s]={}),t=tgt(z.e.n,i);v.ok=true;if(!v.r)v.r=String(t.r);if(z.e.w&&!v.w)v.w=fw(t.w);save();startT(z.e.rest);render()}
-function tap(){unlockAudio();if(run)return;const q=seqOf(cur),k=q.findIndex(z=>!z.ok);if(k<0)return;const z=q[k];if(z.e.u){exCtx={i:cur,x:z.x,s:z.s};startT(tgt(z.e.n,cur).r,"ex");render()}else done()}
+function tap(){unlockAudio();if(run)return;const q=seqOf(cur),k=q.findIndex(z=>!z.ok);if(k<0)return;const z=q[k];if(z.e.u){exCtx={i:cur,x:z.x,s:z.s,dur:tgt(z.e.n,cur).r};lastR=0;if(S.pre>0)startT(S.pre,"pre");else beginEx();render()}else done()}
 function undo(){const q=seqOf(cur);let k=-1;q.forEach((z,n)=>{if(z.ok)k=n});if(k<0)return;L(cur).sets[q[k].x][q[k].s].ok=false;save();stopT();render()}
 function adj(d){if(!run)return;te+=d*1e3;tTot=Math.max(tTot,Math.ceil((te-Date.now())/1e3));tick()}
 let DL=null,tsT=0;
@@ -249,23 +259,89 @@ function dlg(msg,ok,o){o=o||{};document.getElementById("mb").innerHTML=`<div sty
 function mc(){document.getElementById("md").classList.remove("on");DL=null}
 function mo(){const t=document.getElementById("mt"),f=DL,v=t?t.value:null;mc();if(f)f(v)}
 function toast(m){const t=document.getElementById("ts");t.textContent=m;t.classList.add("on");clearTimeout(tsT);tsT=setTimeout(()=>t.classList.remove("on"),2500)}
+/* ---------- советы, иллюстрации, экспорт ---------- */
+const TP=[[/планк/,"plank","Тело — прямая линия от головы до пяток: таз не провисает и не задран. Напряги пресс и ягодицы, смотри в пол, дыши ровно."],
+[/колен.*вис|ног.*вис|подъ[её]м (ног|колен)/,"leg","Без раскачки: поднимай колени или ноги за счёт пресса, плечи тяни вниз от перекладины, опускай медленно."],
+[/подтяг|вис|лопат/,"pull","Сначала опусти лопатки вниз и назад, подбородок выше перекладины, внизу почти полностью выпрями руки. Без рывков, выдох на подъёме."],
+[/отжим/,"push","Корпус — прямая линия, локти около 45° к телу, грудь тянется к полу. Опускайся 2–3 секунды, выдох на подъёме."],
+[/скручив/,"crunch","Поясница прижата к полу, поднимай лопатки, не тяни шею руками. Выдох на усилии, движение медленное."],
+[/кист|блин|пальц/,"wrist","Предплечье лежит на опоре, работает только кисть. Лёгкий вес, полная амплитуда, без боли в запястьях."]];
+const tipOf=n=>TP.find(t=>t[0].test(String(n).toLowerCase()));
+const MN={chest:"грудные",delt:"дельты",bi:"бицепс",tri:"трицепс",fore:"предплечья",abs:"пресс",obl:"косые мышцы живота",lat:"широчайшие",trap:"трапеции",low:"поясница",glute:"ягодицы",quad:"квадрицепсы"};
+const MX={pull:{p:["lat","bi","fore"],s:["trap","delt","abs"]},push:{p:["chest","tri","delt"],s:["abs","fore"]},plank:{p:["abs","obl"],s:["delt","glute","low"]},leg:{p:["abs","obl"],s:["fore","quad"]},crunch:{p:["abs"],s:["obl"]},wrist:{p:["fore"],s:[]}};
+const cap=(a,b,c,d,w)=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke-width="${w}"/>`,el=(x,y,rx,ry)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/>`,ci=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}"/>`;
+const ZF={delt:ci(27,39,6.5)+ci(73,39,6.5),chest:el(40,50,9.5,7)+el(60,50,9.5,7),bi:cap(21,45,16,68,7)+cap(79,45,84,68,7),fore:cap(14,78,11,104,6)+cap(86,78,89,104,6),abs:'<rect x="44" y="60" width="12" height="34" rx="4"/>',obl:el(37,78,4.5,13)+el(63,78,4.5,13),quad:cap(42,112,40,142,11)+cap(58,112,60,142,11)};
+const ZB={trap:'<polygon points="50,28 36,38 50,60 64,38"/>',delt:ci(27,39,6.5)+ci(73,39,6.5),tri:cap(21,45,16,68,7)+cap(79,45,84,68,7),fore:cap(14,78,11,104,6)+cap(86,78,89,104,6),lat:el(37,60,8,15)+el(63,60,8,15),low:el(50,88,9,6),glute:el(43,108,8,7)+el(57,108,8,7)};
+const BASE=ci(50,14,9)+'<rect x="45" y="22" width="10" height="7"/><path d="M26 34Q50 26 74 34L70 62Q66 82 64 92L66 104L34 104L36 92Q34 82 30 62Z"/>'+cap(22,40,15,72,11)+cap(15,74,11,108,9)+cap(78,40,85,72,11)+cap(85,74,89,108,9)+cap(42,106,40,146,15)+cap(40,148,39,182,11)+cap(58,106,60,146,15)+cap(60,148,61,182,11);
+function body(Z,m){let g=`<g fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" opacity=".13">${BASE}</g>`;
+ Object.keys(Z).forEach(k=>{const p=m.p.includes(k),sc=m.s.includes(k);g+=`<g style="fill:${p||sc?"var(--ac)":"currentColor"};stroke:${p||sc?"var(--ac)":"currentColor"}" stroke-width="0" stroke-linecap="round" opacity="${p?1:sc?.45:.1}">${Z[k]}${p?'<animate attributeName="opacity" values="1;.6;1" dur="2.4s" repeatCount="indefinite"/>':""}</g>`});return g}
+function ill(k){const m=MX[k];if(!m)return"";return`<svg viewBox="0 0 230 206" style="color:var(--tx)"><g transform="translate(5,0)">${body(ZF,m)}</g><g transform="translate(125,0)">${body(ZB,m)}</g><text x="55" y="203" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">Спереди</text><text x="175" y="203" text-anchor="middle" font-size="10" fill="currentColor" opacity=".6">Сзади</text></svg>`}
+const KT='calcMode="spline" keyTimes="0;.5;1" keySplines=".4 0 .2 1;.4 0 .2 1" dur="2.8s" repeatCount="indefinite"';
+const an=(n,a,b)=>a===b?"":`<animate attributeName="${n}" values="${a};${b};${a}" ${KT}/>`,P2=(a,b)=>[a,b||a],mx=p=>[[200-p[0][0],p[0][1]],[200-p[1][0],p[1][1]]],of=(p,dx,dy)=>[[p[0][0]+dx,p[0][1]+dy],[p[1][0]+dx,p[1][1]+dy]];
+const sg=(p,q,w,hl)=>`<line x1="${p[0][0]}" y1="${p[0][1]}" x2="${q[0][0]}" y2="${q[0][1]}" stroke-width="${w}" style="stroke:${hl?"var(--ac)":"currentColor"}"${hl?"":' opacity=".5"'}>${an("x1",p[0][0],p[1][0])}${an("y1",p[0][1],p[1][1])}${an("x2",q[0][0],q[1][0])}${an("y2",q[0][1],q[1][1])}</line>`;
+const hd=(p,r)=>`<circle r="${r||8}" cx="${p[0][0]}" cy="${p[0][1]}" fill="currentColor" stroke="none" opacity=".7">${an("cx",p[0][0],p[1][0])}${an("cy",p[0][1],p[1][1])}</circle>`;
+const pulse=x=>`<g>${x}<animate attributeName="opacity" values="1;.55;1" dur="2.4s" repeatCount="indefinite"/></g>`;
+const BARL='<line x1="40" y1="16" x2="160" y2="16" stroke-width="6" style="stroke:currentColor" opacity=".8"/>',FLR='<line x1="14" y1="124" x2="186" y2="124" stroke-width="2" style="stroke:currentColor" opacity=".3"/>',BARC='<circle cx="110" cy="16" r="5" fill="currentColor" stroke="none" opacity=".8"/>';
+const ANI={
+pull:[["Сзади",()=>{const h1=P2([80,16]),s1=P2([88,58],[88,34]),e1=P2([84,37],[74,28]),m=P2([100,58],[100,34]),hp=P2([100,92],[100,68]),k1=P2([95,112],[95,88]),f1=P2([94,132],[94,108]),k2=P2([105,112],[105,88]),f2=P2([106,132],[106,108]);return BARL+sg(h1,e1,7,1)+sg(e1,s1,8,1)+sg(mx(h1),mx(e1),7,1)+sg(mx(e1),mx(s1),8,1)+sg(s1,mx(s1),10,1)+sg(m,hp,14,1)+sg(hp,k1,10)+sg(k1,f1,8)+sg(hp,k2,10)+sg(k2,f2,8)+hd(of(m,0,-13))}],
+["Сбоку",()=>{const h=P2([110,16]),e=P2([107,37],[96,28]),s=P2([104,58],[104,34]),hp=P2([102,88],[102,64]),k=P2([106,108],[106,84]),f=P2([100,128],[100,104]);return BARC+sg(h,e,7,1)+sg(e,s,8,1)+sg(s,hp,14,1)+sg(hp,k,10)+sg(k,f,8)+hd(of(s,3,-12))}]],
+push:[["Спереди",()=>{const s1=P2([82,62],[82,94]),e1=P2([72,92],[56,108]),h1=P2([70,120]),m=P2([100,62],[100,94]);return FLR+sg(h1,e1,7,1)+sg(e1,s1,8,1)+sg(mx(h1),mx(e1),7,1)+sg(mx(e1),mx(s1),8,1)+sg(s1,mx(s1),12,1)+sg(m,of(m,0,18),14,1)+hd(of(m,0,-14))}],
+["Сбоку",()=>{const fe=P2([30,116]),s=P2([150,82],[150,106]),e=P2([150,101],[132,112]),h=P2([150,120]);return FLR+sg(fe,s,13,1)+sg(s,e,8,1)+sg(e,h,7,1)+hd(of(s,12,-8))}]],
+plank:[["Сверху",()=>pulse(sg(P2([84,36]),P2([116,36]),10,1)+sg(P2([100,36]),P2([100,92]),12,1))+hd(P2([100,16]))+sg(P2([100,92]),P2([95,124]),9)+sg(P2([100,92]),P2([105,124]),9)+sg(P2([84,36]),P2([86,12]),7)+sg(P2([116,36]),P2([114,12]),7)],
+["Сбоку",()=>{const s=P2([138,94],[138,91]);return FLR+pulse(sg(P2([30,112]),s,13,1))+sg(s,P2([138,116]),8)+sg(P2([138,116]),P2([162,116]),7)+hd(of(s,12,-6))}]],
+leg:[["Спереди",()=>{const h1=P2([80,16]),s1=P2([90,48]),e1=P2([85,32]),m=P2([100,48]),hp=P2([100,88]);return BARL+sg(h1,e1,7)+sg(e1,s1,8)+sg(mx(h1),mx(e1),7)+sg(mx(e1),mx(s1),8)+sg(s1,mx(s1),10)+sg(m,hp,14,1)+sg(hp,P2([96,128],[92,96]),10,1)+sg(hp,P2([104,128],[108,96]),10,1)+hd(of(m,0,-13))}],
+["Сбоку",()=>{const h=P2([110,16]),e=P2([107,31]),s=P2([104,46]),hp=P2([102,84]),k=P2([104,106],[128,84]),f=P2([100,126],[122,104]);return BARC+sg(h,e,7)+sg(e,s,8)+sg(s,hp,14,1)+sg(hp,k,10,1)+sg(k,f,8)+hd(of(s,3,-12))}]],
+crunch:[["Спереди",()=>{const hp=P2([100,112]),m=P2([100,106],[100,90]),s1=P2([84,106],[84,90]);return FLR+sg(hp,P2([88,86]),10)+sg(P2([88,86]),P2([88,118]),8)+sg(hp,P2([112,86]),10)+sg(P2([112,86]),P2([112,118]),8)+sg(hp,m,14,1)+sg(s1,mx(s1),10,1)+hd(of(m,0,-12))}],
+["Сбоку",()=>{const hp=P2([112,112]),k=P2([140,84]),s=P2([48,112],[68,84]);return FLR+sg(hp,k,10)+sg(k,P2([166,112]),8)+sg(hp,s,14,1)+hd(of(s,-11,-8))}]],
+wrist:[["Сверху",()=>{const t=P2([142,66],[142,78]);return sg(P2([24,70]),P2([108,70]),10,1)+sg(P2([108,70]),t,8,1)+hd(t,10)}],
+["Сбоку",()=>{const t=P2([146,70],[146,122]);return FLR+sg(P2([24,98]),P2([110,98]),10,1)+sg(P2([110,98]),t,8,1)+hd(t,11)}]]};
+function anim(k){const v=ANI[k];if(!v)return"";return v.map(([lb,f])=>`<svg viewBox="0 0 200 142" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color:var(--tx)">${f()}<text x="100" y="139" text-anchor="middle" font-size="11" fill="currentColor" stroke="none" opacity=".6">${lb}</text></svg>`).join("")}
+function mtxt(k){const m=MX[k];if(!m)return"";return`<p class="mu"><b>Основные:</b> ${m.p.map(x=>MN[x]).join(", ")}${m.s.length?`<br><b>Вторичные:</b> ${m.s.map(x=>MN[x]).join(", ")}`:""}</p>`}
+function tline(e,i){const t=tgt(e.n,i);return`${t.r}${e.u}${e.w?" · +"+fw(t.w)+" кг":""}`}
+function nextLine(e,i){const j=P().findIndex((dd,jj)=>jj>i&&dd.ex.some(q=>q.n===e.n));if(j<0)return"";const q=P()[j].ex.find(q=>q.n===e.n);return`<div class="mu">Следующий раз (${dateOf(j)}): ${tline(q,j)}</div>`}
+function vTips(){const i=cur,d=P()[i];let h=`<h1>Советы на сегодня</h1><p class="mu">${wdOf(i)}, ${dateOf(i)} · ${esc(d.t)}</p>`;
+ if(!d.ex.length)h+=`<div class="card"><h2>Восстановление</h2><ul class="tl"><li>Спокойная прогулка 20–30 минут.</li><li>Лёгкая растяжка плеч, груди и предплечий без боли.</li><li>Сон 7–9 часов, достаточно белка и воды.</li><li>Не добавляй подходов: мышцам нужно время, чтобы вырасти.</li></ul></div>`;
+ else{h+=`<div class="card"><h2>Перед началом</h2><ul class="tl"><li>Разминка 5–7 минут: круги плечами, локтями и кистями.</li><li>1–2 лёгких подхода первого упражнения.</li><li>Выпей воды, держи рядом полотенце и блины.</li><li>Остановись при острой боли в суставах.</li></ul></div>`;
+  if(d.light)h+=`<div class="card"><h2>Облегчённая неделя</h2><p class="mu">${LT}</p></div>`;
+  d.ex.forEach(e=>{const t=tgt(e.n,i),tp=tipOf(e.n),c=dsets(e,d.light);h+=`<div class="card"><h2>${esc(e.n)}</h2>${tp?`<div class="ill ill2">${anim(tp[1])}</div><div class="ill">${ill(tp[1])}</div>${mtxt(tp[1])}`:""}<div class="tg">${c} × ${t.r}${e.u}${e.w?" · +"+fw(t.w)+" кг":""}</div>${tp?`<p>${tp[2]}</p>`:""}${e.cm?`<p class="mu">Заметка: ${esc(e.cm)}</p>`:""}<p class="mu">${t.r<e.hi?"Если все подходы выполнены чисто, цель вырастет до "+Math.min(e.hi,t.r+e.step)+e.u+".":e.w?"Верхняя граница достигнута: при чистых подходах вес вырастет на 1,25 кг, повторения вернутся к "+e.lo+e.u+".":"Верхняя граница достигнута — держи технику и темп."}</p></div>`})}
+ return h+`<div class="card"><h2>Как работает прогрессия</h2><p class="mu">Цели считаются по тому, что ты реально сделал: введённые повторения и вес на вкладке «Сегодня» учитываются в следующих тренировках.</p></div>`}
+async function saveFile(name,blob){try{const dl=window.claude&&claude.use?await claude.use("downloads"):null;if(dl){await dl.save({filename:name,data:blob});return}}catch(e){if(e&&e.code==="declined")return}
+ try{const f=new File([blob],name,{type:blob.type});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return}}catch(e){if(e&&e.name==="AbortError")return}
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
+const WLF=["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"];
+function instr(d){const rf=x=>x>=60&&x%30===0?fw(x/60)+" мин":x+" сек";
+ const it=d.ex.map((e,x)=>{const sd=/ \(на сторону\)$/.test(e.n);return`${x+1}) ${e.n.replace(/ \(на сторону\)$/,"")}: ${e.s}×${e.lo}${e.hi>e.lo?"–"+e.hi:""}${e.u}${sd?" на сторону":""}${e.w&&e.w0?", старт +"+fw(e.w0)+" кг":""}; отдых ${rf(e.rest)}.`});
+ return[d.note,...it,d.light?"ОБЛЕГЧЁННАЯ НЕДЕЛЯ: "+LT.replace("ОБЛЕГЧЁННАЯ НЕДЕЛЯ: ",""):""].filter(Boolean).join("\n")}
+async function expX(){if(!window.ExcelJS){toast("Библиотека Excel не загружена. Нужен интернет при первом запуске.");return}
+ const wb=new ExcelJS.Workbook(),ws=wb.addWorksheet("Программа на "+P().length+" дней",{views:[{state:"frozen",ySplit:1}]});
+ ws.columns=[["День",12],["День недели",15],["Тип нагрузки",18],["Название тренировки",36],["Инструкция и техника выполнения",72],["Результат (Повторения / Вес)",32],["Статус (Выполнено / Пропущено)",26]].map(c=>({header:c[0],width:c[1]}));
+ P().forEach((d,i)=>{const l=LG()[i]||{sets:{}},res=d.ex.map((e,x)=>{const a=(l.sets[x]||[]).filter(v=>v&&(v.ok||v.r));return a.length?e.n+": "+a.map(v=>v.r||"✓").join(", ")+(e.w&&a[0].w?" (+"+a[0].w+" кг)":""):""}).filter(Boolean).join("\n"),any=Object.values(l.sets).some(a=>a.some(v=>v&&(v.ok||v.r)));
+  ws.addRow(["День "+(i+1),WLF[wdIdx(i)],d.k,d.t,instr(d),res||(d.ex.length?"Запиши вес и повторения в каждом подходе.":"Отдых"),l.st==="done"?"Выполнено":l.st==="skip"?"Пропущено":any?"В процессе":"Не начато"])});
+ const hd=ws.getRow(1);hd.height=30;hd.eachCell(c=>{c.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF262626"}};c.font={bold:true,color:{argb:"FFFFFFFF"}};c.alignment={vertical:"middle",wrapText:true}});
+ ws.eachRow((r,n)=>{if(n>1)r.eachCell(c=>{c.alignment={vertical:"top",wrapText:true}});r.eachCell(c=>{c.border={top:{style:"thin",color:{argb:"FFD9D9D9"}},bottom:{style:"thin",color:{argb:"FFD9D9D9"}},left:{style:"thin",color:{argb:"FFD9D9D9"}},right:{style:"thin",color:{argb:"FFD9D9D9"}}}})});
+ const w2=wb.addWorksheet("Правила и прогрессия",{views:[{state:"frozen",ySplit:1}]});w2.columns=[{header:"Раздел",width:25},{header:"Рекомендации",width:110}];
+ const rl=(S.rules||"").split("\n").filter(Boolean).map(x=>{const k=x.indexOf(": ");return k>0?[x.slice(0,k),x.slice(k+2)]:["Прогрессия",x]});(rl.length?rl:[["Прогрессия",DR]]).forEach(r=>w2.addRow(r));
+ const h2=w2.getRow(1);h2.eachCell(c=>{c.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FF262626"}};c.font={bold:true,color:{argb:"FFFFFFFF"}}});w2.eachRow((r,n)=>{if(n>1)r.eachCell(c=>{c.alignment={vertical:"top",wrapText:true}})});
+ try{const buf=await wb.xlsx.writeBuffer();await saveFile("Workout_plan_"+S.ym+".xlsx",new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}))}catch(e){toast("Не удалось создать файл")}}
 /* ---------- действия ---------- */
 function go(d){const n=cur+d;if(n>=P().length){mon(1);return}if(n<0){mon(-1,true);return}cur=n;render(d>0?"l":"r");scrollTo(0,0)}
-function inp(x,s,k,v){const a=L(cur).sets[x]||(L(cur).sets[x]=[]);(a[s]||(a[s]={}))[k]=v;save()}
+function inp(x,s,k,v){const a=L(cur).sets[x]||(L(cur).sets[x]=[]),o=a[s]||(a[s]={});o[k]=v;if(k==="r"&&v){o.ok=true;const b=document.querySelector('[data-ck="'+x+"-"+s+'"]');if(b)b.classList.add("on")}save()}
 function tg(x,s){unlockAudio();lastTog=x+","+s;const e=P()[cur].ex[x],a=L(cur).sets[x]||(L(cur).sets[x]=[]),v=a[s]||(a[s]={});v.ok=!v.ok;
  if(v.ok){const t=tgt(e.n,cur);if(!v.r)v.r=String(t.r);if(e.w&&!v.w)v.w=fw(t.w)}
  save();render();lastTog=null;if(v.ok)startT(e.rest)}
 function resetDay(){dlg("Сбросить тренировку этого дня? Все подходы, повторения, вес и статус будут обнулены.",()=>{const l=L(cur);l.sets={};l.st="";save();stopT();render()})}
 function nt(v){L(cur).note=v;save()}
 function st(v){L(cur).st=v;save();render()}
-let tI,te=0,tTot=0,run=false,tm="rest",exCtx=null;
+let tI,te=0,tTot=0,run=false,tm="rest",exCtx=null,lastR=0,goT=0;
 const fmt=r=>Math.floor(r/60)+":"+String(r%60).padStart(2,"0");
 function startT(sec,m){clearInterval(tI);run=true;tm=m||"rest";tTot=sec;te=Date.now()+sec*1e3;document.getElementById("timer").style.display=V==="work"?"none":"flex";tick();tI=setInterval(tick,200)}
 function tick(){const r=Math.ceil((te-Date.now())/1e3),t=document.getElementById("tt");
- if(r<=0){clearInterval(tI);const was=tm;run=false;play(S.snd);try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}
+ if(r<=0){clearInterval(tI);const was=tm;run=false;if(was==="pre"){beginEx();return}play(S.snd);try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}
   if(was==="ex"){exDone();return}
   t.textContent="Отдых окончен — следующий подход";ring();setTimeout(()=>{if(!run)stopT()},4e3);return}
- t.textContent=(tm==="ex"?"Упражнение: ":"Отдых: ")+fmt(r);ring()}
+ if(tm==="pre"&&r!==lastR){lastR=r;play("tk")}
+ t.textContent=(tm==="ex"?"Упражнение: ":tm==="pre"?"Приготовься: ":"Отдых: ")+(tm==="pre"?r:fmt(r));ring()}
+function beginEx(){const c=exCtx;if(!c)return;goT=Date.now()+900;play("go");try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}startT(c.dur,"ex")}
 function exDone(){const c=exCtx;exCtx=null;if(!c)return;const e=P()[c.i].ex[c.x],l=L(c.i),a=l.sets[c.x]||(l.sets[c.x]=[]),v=a[c.s]||(a[c.s]={}),t=tgt(e.n,c.i);v.ok=true;if(!v.r)v.r=String(t.r);if(e.w&&!v.w)v.w=fw(t.w);save();startT(e.rest);render()}
 function stopT(){clearInterval(tI);run=false;document.getElementById("timer").style.display="none";ring()}
 function imp(inp){const f=inp.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{
